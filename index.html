@@ -3,279 +3,228 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DESIGN MAGAZINE</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Nanum+Myeongjo&family=Noto+Serif+KR&display=swap" rel="stylesheet" />
+  <title>Design Timeline</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Noto+Serif+KR&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; }
-    html, body {
+    body {
       margin: 0;
       padding: 0;
-      font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
-      background-color: #ffffff;
-      overflow-x: hidden;
+      font-family: 'Noto Serif KR', serif;
+      background: #ffffff;
+      color: #222;
     }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 40px 100px;
-      text-align: center;
+      padding: 0 100px;
     }
-    .image-wrapper {
-      perspective: 1500px;
-      width: 100%;
-      height: 300px;
-      margin-bottom: 40px;
-      position: relative;
-      background-image: url('background.jpeg'); /* ✅ 백그라운드 이미지 */
-      background-size: cover;
-      background-position: center;
-    }
-    .image-wrapper canvas {
-      position: absolute !important;
-      top: 0;
-      left: 0;
-      width: 100% !important;
-      height: 100% !important;
-      display: block;
-      z-index: 1;
-    }
-    #mainImage { display: none; }
-    .names-row {
+
+    .header {
       display: flex;
       justify-content: space-between;
-      font-size: 16px;
-      margin: 0 auto 80px;
-      padding: 0 40px;
-      z-index: 10;
-      position: relative;
+      align-items: center;
+      padding: 40px 0 20px;
     }
-    .names-row span {
-      flex: 1;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      padding: 5px;
-      opacity: 1;
-      position: relative;
-      user-select: none;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
     }
-    .names-row span:hover { transform: scale(1.1); }
-    .names-row span.active::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 20%;
-      width: 60%;
-      height: 2px;
-      background-color: #000;
-    }
-    .names-row span.faded { opacity: 0.4; }
-    .title {
+
+    .header-title {
+      font-size: 48px;
       font-family: 'Playfair Display', serif;
-      font-size: 64px;
       font-weight: 700;
-      margin-bottom: 24px;
-      cursor: pointer;
-      transition: color 0.3s ease, transform 0.3s ease;
     }
-    .title:hover {
-      color: #111;
-      transform: scale(1.03);
+
+    .header-names {
+      font-size: 16px;
+      white-space: nowrap;
     }
-    .slogan {
-      font-size: 18px;
-      line-height: 1.6;
-      color: #333;
-      max-width: 900px;
-      margin: 0 auto 60px;
+
+    .header-sub {
+      font-size: 16px;
+      white-space: nowrap;
     }
-    .issue-label {
+
+    .back-button {
       position: fixed;
-      top: 40px;
-      right: 60px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #222;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      font-size: 24px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+      z-index: 10;
     }
-    @media (max-width: 768px) {
-      .container { padding: 30px 20px 80px; }
-      .names-row {
-        flex-direction: column;
-        gap: 12px;
-        padding: 0;
-        margin-bottom: 60px;
-      }
-      .names-row span { text-align: center; }
-      .issue-label {
-        top: 20px;
-        right: 20px;
-        font-size: 12px;
-      }
+
+    .back-button:hover {
+      opacity: 1;
+    }
+
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      padding: 60px 0;
+      gap: 100px;
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 16%;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      cursor: pointer;
+    }
+
+    .timeline-item:nth-child(even) {
+      margin-top: 60px;
+    }
+
+    .timeline-item:hover {
+      transform: translateY(-10px);
+    }
+
+    .number {
+      font-size: 120px;
+      font-family: 'Playfair Display', serif;
+      color: black;
+      position: absolute;
+      top: 0;
+      left: -60px;
+      z-index: 3;
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 0.5s ease;
+    }
+
+    .timeline-item:hover .number {
+      clip-path: inset(0 0 0 0);
+    }
+
+    .stroke {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background: #000;
+      z-index: 2;
+      transition: opacity 0.3s ease;
+    }
+
+    .timeline-item:hover .stroke {
+      opacity: 0;
+    }
+
+    .content {
+      position: relative;
+      margin-left: 20px;
+      margin-top: 100px;
+      z-index: 1;
+      transition: transform 0.3s ease;
+      background: #fdfdfd;
+    }
+
+    .content h3 {
+      font-size: 18px;
+      margin: 0 0 10px;
+    }
+
+    .content p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .image {
+      margin-top: 20px;
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+
+    .timeline-item:nth-child(even) .content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline-item:nth-child(even) .content img {
+      order: -1;
+      margin-bottom: 20px;
+    }
+
+    .timeline:hover .timeline-item {
+      opacity: 0.2;
+    }
+
+    .timeline:hover .timeline-item:hover {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
+  <div class="back-button" onclick="history.back()">&#8592;</div>
   <div class="container">
-    <div class="image-wrapper" id="canvasContainer">
-      <img id="mainImage" src="https://i.imgur.com/3BDeqts.jpeg" alt="Main Visual" />
+    <div class="header">
+      <div class="header-left">
+        <div class="header-title">Design Magazine</div>
+        <div class="header-names">김도연 · 서주연 · 이보영 · 이하늘 · 이화현</div>
+      </div>
+      <div class="header-sub">6월호</div>
     </div>
-    <div class="names-row">
-      <span onclick="changeImage(0)">김도연</span>
-      <span onclick="changeImage(1)">서주연</span>
-      <span onclick="changeImage(2)">이보영</span>
-      <span onclick="changeImage(3)">이하늘</span>
-      <span onclick="changeImage(4)">이화현</span>
-    </div>
-    <div class="title" onclick="resetImage()">DESIGN MAGAZINE</div>
-    <div class="slogan">
-      시각디자인과 예대생들이 일상 속 익숙한 디자인을 새롭게 바라보다.<br/>
-      사이트, 패키지, 포스터, 간판, 색상처럼 당연하게 여겼던 것들에 질문을 던지고 탐구하다.
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="number">1</div>
+        <div class="stroke"></div>
+        <div class="content">
+          <h3>수강신청 화면, 왜 늘 정신없을까?</h3>
+          <p>대학생이라면 누구든 한 번쯤 겪어봤을 그 악몽 같은 순간... 수강신청 시스템의 혼란은 정보 설계의 부재 때문입니다.</p>
+          <img src="do.png" alt="img1" class="image" />
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="number">2</div>
+        <div class="stroke"></div>
+        <div class="content">
+          <img src="jo.png" alt="img2" class="image" />
+          <h3>편의점 패키지, 왜 다 똑같아?</h3>
+          <p>디자인은 기능을 넘어 마케팅 전략이 되었습니다. 비슷해지는 디자인의 이유는 바로...</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="number">3</div>
+        <div class="stroke"></div>
+        <div class="content">
+          <h3>한국판 포스터가 더 센 이유?</h3>
+          <p>문화 차이와 시각 전략이 포스터에 어떻게 반영되는지 사례별 분석!</p>
+          <img src="bo.png" alt="img3" class="image" />
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="number">4</div>
+        <div class="stroke"></div>
+        <div class="content">
+          <img src="ha.png" alt="img4" class="image" />
+          <h3>나쁜 디자인이 주는 위로</h3>
+          <p>균일성과 세련됨에서 벗어난 디자인이 사용자에게 안정감을 줄 수 있는 이유.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="number">5</div>
+        <div class="stroke"></div>
+        <div class="content">
+          <h3>색은 감정의 기억이다</h3>
+          <p>색은 단순한 시각 요소가 아니라 감정과 기억의 매개체입니다.</p>
+          <img src="hwa.png" alt="img5" class="image" />
+        </div>
+      </div>
     </div>
   </div>
-  <div class="issue-label">6월호</div>
-
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
-  <script>
-    const mainImage = document.getElementById('mainImage');
-    const nameSpans = document.querySelectorAll('.names-row span');
-    const images = [
-      'https://i.imgur.com/abc1.jpg',
-      'https://i.imgur.com/abc2.jpg',
-      'https://i.imgur.com/abc3.jpg',
-      'https://i.imgur.com/mwmPkt0.jpeg',
-      'https://i.imgur.com/abc5.jpg'
-    ];
-    const defaultImage = 'https://i.imgur.com/3BDeqts.jpeg';
-    let isFlipping = false;
-
-    function changeImage(index) {
-      if (isFlipping) return;
-      isFlipping = true;
-      setTimeout(() => {
-        mainImage.src = images[index];
-        isFlipping = false;
-      }, 500);
-      nameSpans.forEach((span, i) => {
-        span.classList.remove('active', 'faded');
-        if (i === index) span.classList.add('active');
-        else span.classList.add('faded');
-      });
-    }
-
-    function resetImage() {
-      if (isFlipping) return;
-      isFlipping = true;
-      setTimeout(() => {
-        mainImage.src = defaultImage;
-        isFlipping = false;
-      }, 500);
-      nameSpans.forEach(span => span.classList.remove('active', 'faded'));
-    }
-
-    let points = [];
-    const numPoints = 50;
-    let isHoveringCanvas = false;
-
-    new p5((p) => {
-      p.setup = function () {
-        const container = document.getElementById('canvasContainer');
-        const w = container.clientWidth;
-        const h = container.clientHeight;
-        const canvas = p.createCanvas(w, h);
-        canvas.parent(container);
-        p.noFill();
-
-        for (let i = 0; i < numPoints; i++) {
-          points.push({
-            x: p.random(w),
-            y: p.random(h),
-            offsetAngle: p.random(p.TWO_PI),
-            offsetRadius: p.random(10, 40),
-            size: p.random(2, 4),
-            speed: p.random(0.0005, 0.002)
-          });
-        }
-      };
-
-      p.draw = function () {
-        p.clear();
-        const time = p.millis();
-        p.strokeWeight(0.5);
-
-        for (let pt of points) {
-          pt.ox = pt.x + Math.sin(time * pt.speed + pt.offsetAngle) * pt.offsetRadius;
-          pt.oy = pt.y + Math.cos(time * pt.speed + pt.offsetAngle) * pt.offsetRadius;
-          p.noStroke();
-          p.fill(255);
-          p.ellipse(pt.ox, pt.oy, pt.size, pt.size);
-        }
-
-        p.stroke(255, 40);
-        for (let i = 0; i < points.length; i++) {
-          for (let j = i + 1; j < points.length; j++) {
-            const d = p.dist(points[i].ox, points[i].oy, points[j].ox, points[j].oy);
-            if (d < 120 && p.random() < 0.03) {
-              p.line(points[i].ox, points[i].oy, points[j].ox, points[j].oy);
-            }
-          }
-        }
-
-        if (isHoveringCanvas) {
-          drawMouseLines();
-          drawCursorText();
-        }
-      };
-
-      function drawMouseLines() {
-        const mousePos = p.createVector(p.mouseX, p.mouseY);
-        const dists = points.map(pt => {
-          const pos = p.createVector(pt.ox, pt.oy);
-          return { pt, dist: p5.Vector.dist(mousePos, pos) };
-        });
-        dists.sort((a, b) => a.dist - b.dist);
-        p.stroke(255, 100);
-        p.strokeWeight(0.7);
-        for (let i = 0; i < 6; i++) {
-          const pt = dists[i]?.pt;
-          if (pt) {
-            p.line(p.mouseX, p.mouseY, pt.ox, pt.oy);
-          }
-        }
-      }
-
-      function drawCursorText() {
-        p.noStroke();
-        p.fill(255);
-        p.textAlign(p.CENTER, p.CENTER);
-        p.textSize(18);
-        p.textFont('Nanum Myeongjo');
-        p.text("탐색하기", p.mouseX, p.mouseY - 30);
-      }
-
-      p.windowResized = function () {
-        const container = document.getElementById('canvasContainer');
-        p.resizeCanvas(container.clientWidth, container.clientHeight);
-      };
-
-      p.mouseMoved = function () {
-        const rect = document.getElementById('canvasContainer').getBoundingClientRect();
-        isHoveringCanvas = (
-          p.mouseX >= 0 && p.mouseX <= p.width &&
-          p.mouseY >= 0 && p.mouseY <= p.height &&
-          p.mouseX + rect.left >= rect.left &&
-          p.mouseX + rect.left <= rect.right &&
-          p.mouseY + rect.top >= rect.top &&
-          p.mouseY + rect.top <= rect.bottom
-        );
-      };
-
-      p.mouseClicked = function () {
-        if (isHoveringCanvas) {
-          window.open("https://example.com", "_blank");
-        }
-      };
-    });
-  </script>
 </body>
 </html>
-
